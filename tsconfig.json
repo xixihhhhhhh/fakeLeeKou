@@ -1,0 +1,48 @@
+{
+  "allowJs": true,
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
+    "lib": [
+      "esnext",
+      "dom",
+      "es2015",
+    ],
+    // ++ 这里加上baseUrl 和 path即可 ++
+    "baseUrl": "./",
+    "paths": {
+      // 根据别名配置相关路径
+      "@*": [
+        "./src*"
+      ],
+      "#*": [
+        "./types*"
+      ],
+    },
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./types"
+    ],
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "scripts/**"
+  ]
+}
