@@ -1,0 +1,76 @@
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ellipsis2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+.ellipsis3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+}
+
+@themeColor: #0591b5;
+.page-wrapper {
+  height: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+:deep(.base-card-title) {
+  .base-card-title-hl {
+    background: @themeColor !important;
+  }
+}
+:deep(.ant-tabs-top > .ant-tabs-nav) {
+  margin: 0 0 7px 0;
+  &::before {
+    border-color: @themeColor !important;
+    opacity: 0.2 !important;
+  }
+}
+:deep(.ant-tabs-tab) {
+  padding-top: 0 !important;
+  font-weight: bold !important;
+  &:hover {
+    color: @themeColor !important;
+  }
+}
+:deep(.ant-tabs-tab-active .ant-tabs-tab-btn) {
+  color: @themeColor !important;
+}
+:deep(
+    .ant-tabs-tab-btn:focus,
+    .ant-tabs-tab-remove:focus,
+    .ant-tabs-tab-btn:active,
+    .ant-tabs-tab-remove:active
+  ) {
+  color: @themeColor !important;
+}
+:deep(.ant-tabs-ink-bar) {
+  background: linear-gradient(to right, #00b29f, #0478cd, #00b29f);
+}
+// img{
+//   width: 100%;
+// }
+.table-title{
+  color: #0591b5;
+  cursor: pointer;
+  &:hover{
+    // border-bottom: 1px solid #0591b5;
+    text-decoration:underline
+  }
+}
+
+@--text-secondary: #0000008c;
+@--text-yellow: #FFA116;
