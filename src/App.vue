@@ -4,6 +4,10 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <RouterView />
+  <a-tooltip>
+    <template #title>回到顶部</template>
+    <a-back-top :visibilityHeight="100" />
+  </a-tooltip>
 </template>
 
 
@@ -13,8 +17,8 @@ import { RouterLink, RouterView } from "vue-router";
 
 #app {
   width: 100%;
-  height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,7 +32,6 @@ import { RouterLink, RouterView } from "vue-router";
   // -khtml-user-select: none;
   // /*早期浏览器*/
   // user-select: none;
-  overflow: hidden;
 }
 
 *,

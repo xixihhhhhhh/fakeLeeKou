@@ -17,21 +17,20 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
         children: [
             {
                 path: "/home",
-                name: "home",
                 component: () => import("@/views/home/index.vue"),
                 meta: { title: "首页", keepAlive: true },
                 children: [
                     {
-                        path: "/",
-                        redirect: "/index",
+                        path: "",
+                        redirect: "/home/homeIndex"
                     },
                     {
-                        path: "/homeIndex",
+                        path: "homeIndex",
                         name: 'homeIndex',
                         component: () => import("@/views/home/components/homeIndex.vue"),
                     },
                     {
-                        path: "/login",
+                        path: "login",
                         name: 'login',
                         component: () => import("@/views/home/components/login.vue"),
                     }

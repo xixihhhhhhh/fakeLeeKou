@@ -54,31 +54,31 @@
                                 <SearchOutlined />
                             </template>
                         </a-button>
-                        <a-input v-model:value="userName" placeholder="搜素" v-else autofocus>
+                        <a-input v-model:value="userName" placeholder="搜素" v-else autofocus @blur="onblur">
                             <template #prefix>
                                 <SearchOutlined type="user" />
                             </template>
                         </a-input>
                     </div>
                     <div class="right-middle right-item">
-                        <a href="" style="margin-right: 10px;" @click="router.push('/login')">注册</a>
+                        <router-link to="/home/login" style="margin-right: 10px;">注册</router-link>
                         <span style="margin-right: 10px;">或</span>
-                        <a href="" @click="router.push('/login')">登录</a>
+                        <router-link to="/home/login" style="margin-right: 10px;">登录</router-link>
                     </div>
                     <div class="right-right right-item">
                         <a-button><span class="page-container-home-yellow">Plus &nbsp;力扣周边</span></a-button>
                     </div>
                 </div>
             </div>
+            <div class="divider"></div>
             <RouterView />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import { DownOutlined, SearchOutlined } from '@ant-design/icons-vue';
-
 const handleMenuClick = () => {
 
 }
@@ -89,24 +89,34 @@ const onSearch = () => {
 }
 
 import { RouterView } from "vue-router"
-import { useRouter } from 'vue-router'
-const router = useRouter()
+
+
+const onblur = () => {
+    console.log('hhh')
+    isShowSearch.value = true
+}
 </script>
 
 <style lang="less" scoped>
 @import url("../../global.less");
 
 .page-container {
-    height: 100%;
     background: #666;
-    padding: 2px;
     color: @--text-secondary;
+    overflow-x: hidden;
 
     .container {
         height: 100%;
         border-radius: 1% 1% 0 0;
         background: #fff;
-        padding: 0 5%;
+        padding: 0 10%;
+
+        .divider {
+            width: 100%;
+            border: #eee 1px solid;
+            position: absolute;
+            left: 0;
+        }
 
         .header {
             height: 60px;
@@ -114,13 +124,11 @@ const router = useRouter()
             justify-content: space-between;
             align-items: center;
             font-size: 16px;
-            border-bottom: #999 solid 1px;
 
             .left {
                 display: flex;
 
                 .left-item {
-
                     margin-right: 40px;
                     cursor: pointer;
                 }
@@ -152,7 +160,5 @@ const router = useRouter()
 
 .page-container-home-yellow {
     color: @--text-yellow;
-
-
 }
 </style>
