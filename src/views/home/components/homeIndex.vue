@@ -106,9 +106,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="right-img" >
+                        <div class="right-img">
                             <img src="https://pic.leetcode.cn/1696919757-gIwtqs-Enlighten AI · 机器学习.png" alt=""
-                                class="h-full w-full rounded object-cover" >
+                                class="h-full w-full rounded object-cover">
                         </div>
                     </div>
                 </div>
@@ -222,9 +222,8 @@ const router = useRouter()
 .index-container {
     display: flex;
     justify-content: space-between;
-    height: 2200px;
     margin-top: 20px;
-
+    padding: 0 10%;
     .left {
         width: 70%;
 

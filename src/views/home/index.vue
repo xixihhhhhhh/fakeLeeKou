@@ -54,7 +54,7 @@
                                 <SearchOutlined />
                             </template>
                         </a-button>
-                        <a-input v-model:value="userName" placeholder="搜素" v-else autofocus @blur="onblur">
+                        <a-input v-model:value="userName" placeholder="搜素" v-else autofocus @blur="isShowSearch = true">
                             <template #prefix>
                                 <SearchOutlined type="user" />
                             </template>
@@ -90,11 +90,6 @@ const onSearch = () => {
 
 import { RouterView } from "vue-router"
 
-
-const onblur = () => {
-    console.log('hhh')
-    isShowSearch.value = true
-}
 </script>
 
 <style lang="less" scoped>
@@ -109,7 +104,6 @@ const onblur = () => {
         height: 100%;
         border-radius: 1% 1% 0 0;
         background: #fff;
-        padding: 0 10%;
 
         .divider {
             width: 100%;
@@ -124,7 +118,7 @@ const onblur = () => {
             justify-content: space-between;
             align-items: center;
             font-size: 16px;
-
+            padding: 0 10%;
             .left {
                 display: flex;
 
