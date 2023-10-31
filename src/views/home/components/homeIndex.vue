@@ -125,16 +125,19 @@
                         </div>
                     </li>
                 </ul>
-                <div class="right-dayCard">
-                    <div class="card-top">
-                        <img src="https://static.leetcode-cn.com/cn-frontendx-assets/production/_next/static/images/everyday-problem-cbb6325ef6fecf53712264fb80350ef9.svg"
-                            alt="每日 1 题" class="h-[14px] w-[14px]">
-                        <span class="ml-1 text-xs font-medium" style="color: rgb(27, 163, 255);">每日 1 题</span>
+
+                <router-link to="/problems">
+                    <div class="right-dayCard">
+                        <div class="card-top">
+                            <img src="https://static.leetcode-cn.com/cn-frontendx-assets/production/_next/static/images/everyday-problem-cbb6325ef6fecf53712264fb80350ef9.svg"
+                                alt="每日 1 题" class="h-[14px] w-[14px]">
+                            <span class="ml-1 text-xs font-medium" style="color: rgb(27, 163, 255);">每日 1 题</span>
+                        </div>
+                        <div class="card-bottom">
+                            2520.统计能整除数字的位数
+                        </div>
                     </div>
-                    <div class="card-bottom">
-                        2520.统计能整除数字的位数
-                    </div>
-                </div>
+                </router-link>
                 <div class="right-welcome">
                     <div class="welcome-top">欢迎来到假力扣</div>
                     <div class="welcome-bottom">
@@ -187,6 +190,7 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue"
+import { RouterView } from "vue-router"
 
 import dayjs from 'dayjs'
 let arr: any[] = []
@@ -224,6 +228,7 @@ const router = useRouter()
     justify-content: space-between;
     margin-top: 20px;
     padding: 0 10%;
+
     .left {
         width: 70%;
 

@@ -31,6 +31,21 @@
                         <BaseForm :config="enrollColumns" :rules="enrollFormRules" v-model:data="enrollFormData"
                             style="margin-top: 20px;" ref="enrollFormRef">
                         </BaseForm>
+                        <a-form>
+                            <a-col :span="24">
+                                <a-form-item label="验证码" v-bind="validateInfos.verify" :labelCol="{ span: 4 }">
+                                    <div style="display: flex;justify-content: space-around;">
+                                        <a-input v-model:value="modelRef.verify"></a-input>
+                                        <div class="verify">
+                                            <a-button @click="send()" type="primary" v-if="time === 0">发送验证码</a-button>
+                                            <span v-else class="code">
+                                                {{ time + '秒后获取' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a-form-item>
+                            </a-col>
+                        </a-form>
                         <a-button type="primary" style="width: 100%;height: 40px; font-weight: bold;"
                             @click="enroll">注册</a-button>
                     </a-tab-pane>
@@ -41,9 +56,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 
-const activeKey = ref('enroll')
+const activeKey = ref('login')
 import BaseForm from "@/components/BaseForm/index.vue";
 
 import { loginColumns, loginFormRules, enrollFormRules, enrollColumns } from "./config";
@@ -51,17 +66,82 @@ import { loginColumns, loginFormRules, enrollFormRules, enrollColumns } from "./
 const loginFormData = ref<any>({});
 const loginFormRef = ref();
 const login = async () => {
-    let status = await loginFormRef.value.validateFn();
+    let status = await loginFormRef.value.validateFn()
+    if (status) {
+        
+    }
     console.log(status)
 }
+import { Form, message } from "ant-design-vue";
+const useForm = Form.useForm;
+const modelRef = reactive<any>({
+    verify: undefined,
+});
+const rulesRef = reactive({
+    verify: [
+        {
+            required: true,
+            message: "请输入验证码",
+        },
+    ]
+});
+const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef);
 
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const enrollFormData = ref<any>({});
 const enrollFormRef = ref();
+import Cookies from "js-cookie";
 const enroll = async () => {
     let status = await enrollFormRef.value.validateFn();
-    console.log(status)
+    if (status) {
+        await validate().then(() => {
+            if (enrollFormData.value.Password !== enrollFormData.value.ensurePassword) {
+                return message.error('密码和确认密码不一致！')
+            }
+            let data = {
+                ...enrollFormData.value,
+                ...modelRef
+            }
+            delete data.ensurePassword
+            loginApi.enroll(data).then((res: any) => {
+                console.log(res, 'reshhh')
+                if (res.code === 200) {
+                    Cookies.set('token', res.data.token)
+                    message.success('注册成功!')
+                    router.push('/home/homeIndex')
+                } else if (res.code === 201) {
+                    message.error(res.msg)
+                } else {
+                    message.error(res.msg)
+                }
+            })
+        }).catch(error => {
+            console.log(error)
+        })
+
+    }
 }
 
+import { useCountDown } from '@/compositions/index'
+const { start, time } = useCountDown()
+const isSendCode = ref(false)
+const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+import { loginApi } from '@/api/user/login'
+const send = async () => {
+    console.log(enrollFormData.value.Email)
+    if (reg.test(enrollFormData.value.Email)) {
+        loginApi.getverifyCode(enrollFormData.value.Email).then((res) => {
+            console.log(res)
+        }).catch(error => {
+            console.log(error)
+        })
+        isSendCode.value = true
+        start(60)
+    } else {
+        message.error('邮箱格式不正确!')
+    }
+}
 </script>
 
 <style lang="less" scoped>
@@ -87,6 +167,18 @@ const enroll = async () => {
 
         .content {
             margin: 0 20px;
+        }
+    }
+
+    .verify {
+        width: 200px;
+        margin-left: 20px;
+
+        .code {
+            padding: 10px;
+            background: rgb(5, 145, 181);
+            color: #fff;
+            border-radius: 10px;
         }
     }
 }

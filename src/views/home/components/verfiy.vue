@@ -19,12 +19,13 @@ const send = async () => {
     // // 如果大于0  直接return
     if (time.value > 0) return
     // 发送Ajax
-    try {
-        await loginApi.getVerfiyCode(form.mobile).then((res) => console.log(res))
-        Message({ type: 'success', text: '获取验证码成功！' })
-    } catch (error) {
-        Message({ type: 'error', text: error.response.data.message || '获取验证码失败！' })
-    }
+    // try {
+    //     await loginApi.getVerfiyCode(form.mobile).then((res) => console.log(res))
+    //     Message({ type: 'success', text: '获取验证码成功！' })
+    // } catch (error) {
+    //     Message({ type: 'error', text: error.response.data.message || '获取验证码失败！' })
+    // }
+    
     isSendCode.value = true
     start(60)
 }
@@ -32,9 +33,8 @@ const send = async () => {
 
 <style lang="less" scoped>
 .verfiy {
-    position: relative;
-    top: 5px;
-
+    width: 200px;
+    margin-left: 20px;
     .code {
         padding: 10px;
         background: rgb(5, 145, 181);

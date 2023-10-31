@@ -44,32 +44,32 @@ export const enrollColumns: Array<FormConfig> = [
         span: 24,
         labelSpan: 4,
         label: "密码",
-        type: 'a-input',
+        type: 'a-input-password',
         key: "Password",
     },
     {
         span: 24,
         labelSpan: 4,
         label: "确认密码",
-        type: 'a-input',
+        type: 'a-input-password',
         key: "ensurePassword",
     },
-    {
-        span: 14,
-        labelSpan: 7,
-        label: "验证码",
-        type: 'a-input',
-        key: "Verify",
-    },
-    {
-        span: 2,
-        label: "",
-    },
-    {
-        span: 8,
-        labelSpan: 6,
-        type: markRaw(verfiy),
-    },
+    // {
+    //     span: 14,
+    //     labelSpan: 7,
+    //     label: "验证码",
+    //     type: 'a-input',
+    //     key: "Verify",
+    // },
+    // {
+    //     span: 2,
+    //     label: "",
+    // },
+    // {
+    //     span: 8,
+    //     labelSpan: 6,
+    //     type: markRaw(verfiy),
+    // },
 ] as any;
 
 export const enrollFormRules: Record<string, Rule[]> = {

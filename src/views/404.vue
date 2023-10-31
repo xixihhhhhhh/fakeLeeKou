@@ -20,7 +20,7 @@ export default {
 
 <style lang="less" scoped>
 .exception {
-    height: 100%;
+    height: 600px;
 }
 
 .content {

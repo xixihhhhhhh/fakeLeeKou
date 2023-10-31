@@ -37,6 +37,10 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
                 ]
             },
             {
+                path: '/problems',
+                component: () => import("@/views/problems/index.vue"),
+            },
+            {
                 path: "/:pathMatch(.*)", // 页面不存在的情况下会跳到404页面
                 redirect: "/404",
                 name: "notFound",
