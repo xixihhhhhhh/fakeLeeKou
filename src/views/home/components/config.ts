@@ -1,5 +1,6 @@
 import { FormConfig } from "@/components/BaseForm/config";
 import { Rule } from "ant-design-vue/lib/form";
+import { markRaw } from "vue";
 
 export const loginColumns: Array<FormConfig> = [
     {
@@ -23,6 +24,7 @@ export const loginFormRules: Record<string, Rule[]> = {
     Password: [{ required: true, min: 6, max: 18, message: '请输入密码!' }],
 };
 
+import verfiy from './verfiy.vue'
 export const enrollColumns: Array<FormConfig> = [
     {
         span: 24,
@@ -66,7 +68,7 @@ export const enrollColumns: Array<FormConfig> = [
     {
         span: 8,
         labelSpan: 6,
-        type: 'a-input',
+        type: markRaw(verfiy),
     },
 ] as any;
 

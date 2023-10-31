@@ -15,3 +15,5 @@ declare module 'vue-router' {
     interface RouteMeta extends RouterMeta {
     }
 }
+
+dec
