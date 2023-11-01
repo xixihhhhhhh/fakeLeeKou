@@ -27,4 +27,12 @@ export const loginApi = new (class {
             data
         })
     }
+    /* 找回密码 */
+    findPassword = <T = any>(data: any) => {
+        return axios<ResDataStruct<T>>({
+            url: `${prefixPath}/security`,
+            method: "put",
+            data
+        })
+    }
 })();

@@ -3,9 +3,9 @@
 /** 基础数据接口 */
 export interface ResDataStruct<T = any> {
   /** 响应内容体 */
-  body: T;
+  data: T;
   /** api响应信息 */
-  message: string;
+  msg: string;
   /** api响应编码 */
   code: number;
   /** 当前请求页数 */
@@ -14,24 +14,6 @@ export interface ResDataStruct<T = any> {
   success: boolean;
   /** api接口查询数据库总数 */
   total: number | string | null;
-}
-/** 字典数据结构 */
-export interface BaseDictStruct {
-  appId: string | null
-  appName: string | null
-  created: string
-  createdBy: string
-  dictKey: string
-  dictName: string
-  dictType: number
-  dictValue: string
-  isLeaf: number
-  parentId: string
-  sid: string
-  status: number | null
-  tenantId: string
-  userId: string | null
-  ordered: number | null
 }
 
 /** 登录数据结构 */

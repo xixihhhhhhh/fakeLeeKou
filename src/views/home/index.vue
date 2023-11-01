@@ -51,12 +51,10 @@
                 </div>
                 <div class="right">
                     <div class="right-left right-item">
-                        <a-button type="primary" shape="circle" v-if="isShowSearch" @click="isShowSearch = false">
-                            <template #icon>
-                                <SearchOutlined />
-                            </template>
-                        </a-button>
-                        <a-input v-model:value="userName" placeholder="搜素" v-else autofocus @blur="isShowSearch = true">
+                        <div v-if="isShowSearch" @click="isShowSearch = false" class="right-item-search">
+                            <SearchOutlined />
+                        </div>
+                        <a-input v-model:value="userName" placeholder="搜素" autofocus @blur="isShowSearch = true" v-else>
                             <template #prefix>
                                 <SearchOutlined type="user" />
                             </template>
@@ -137,6 +135,15 @@ import { RouterView } from "vue-router"
 
                 .right-item {
                     margin-right: 10px;
+
+                    .right-item-search {
+                        padding: 4px 10px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: #eee;
+                        }
+                    }
                 }
 
                 .right-middle {

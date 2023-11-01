@@ -2,7 +2,7 @@ import { FormConfig } from "@/components/BaseForm/config";
 import { Rule } from "ant-design-vue/lib/form";
 import { markRaw } from "vue";
 
-export const loginColumns: Array<FormConfig> = [
+export const loginConfig: Array<FormConfig> = [
     {
         span: 24,
         labelSpan: 4,
@@ -20,12 +20,14 @@ export const loginColumns: Array<FormConfig> = [
 ] as any;
 
 export const loginFormRules: Record<string, Rule[]> = {
-    Email: [{ required: true, message: '请输入邮箱！' }],
-    Password: [{ required: true, min: 6, max: 18, message: '请输入密码!' }],
+    Email: [{
+        required: true, message: '邮箱格式不正确!',
+        pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+    }],
+    Password: [{ required: true, min: 6, max: 18, message: '请输入6到18位的密码!' }],
 };
 
-import verfiy from './verfiy.vue'
-export const enrollColumns: Array<FormConfig> = [
+export const enrollConfig: Array<FormConfig> = [
     {
         span: 24,
         labelSpan: 4,
@@ -54,28 +56,32 @@ export const enrollColumns: Array<FormConfig> = [
         type: 'a-input-password',
         key: "ensurePassword",
     },
-    // {
-    //     span: 14,
-    //     labelSpan: 7,
-    //     label: "验证码",
-    //     type: 'a-input',
-    //     key: "Verify",
-    // },
-    // {
-    //     span: 2,
-    //     label: "",
-    // },
-    // {
-    //     span: 8,
-    //     labelSpan: 6,
-    //     type: markRaw(verfiy),
-    // },
 ] as any;
 
 export const enrollFormRules: Record<string, Rule[]> = {
-    Email: [{ required: true, trigger: 'blur', message: '请输入邮箱！' }],
+    Email: [{
+        required: true, trigger: 'blur', message: '请输入邮箱！',
+        pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+    }],
     Name: [{ required: true, trigger: 'blur', message: '请输入名称！' }],
     Password: [{ required: true, trigger: 'blur', message: '请输入密码！' }],
     ensurePassword: [{ required: true, trigger: 'blur', message: '请确认密码！' }],
     Verify: [{ required: true, trigger: ['change', 'blur'], message: '请输入验证码！' }],
+};
+
+export const findPasswordConfig: Array<FormConfig> = [
+    {
+        span: 24,
+        labelSpan: 4,
+        label: "邮箱",
+        type: 'a-input',
+        key: "Email",
+    },
+] as any;
+
+export const findPasswordFormRules: Record<string, Rule[]> = {
+    Email: [{
+        required: true, trigger: 'blur', message: '邮箱格式不正确!',
+        pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+    }],
 };

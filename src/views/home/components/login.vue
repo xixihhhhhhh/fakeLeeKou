@@ -21,21 +21,21 @@
             <div class="content">
                 <a-tabs v-model:activeKey="activeKey">
                     <a-tab-pane key="login" tab="登录">
-                        <BaseForm :config="loginColumns" :rules="loginFormRules" v-model:data="loginFormData"
+                        <BaseForm :config="loginConfig" :rules="loginFormRules" v-model:data="loginFormData"
                             style="margin-top: 20px;" ref="loginFormRef">
                         </BaseForm>
                         <a-button type="primary" style="width: 100%;height: 40px; font-weight: bold;"
                             @click="login">登录</a-button>
                     </a-tab-pane>
                     <a-tab-pane key="enroll" tab="注册">
-                        <BaseForm :config="enrollColumns" :rules="enrollFormRules" v-model:data="enrollFormData"
+                        <BaseForm :config="enrollConfig" :rules="enrollFormRules" v-model:data="enrollFormData"
                             style="margin-top: 20px;" ref="enrollFormRef">
                         </BaseForm>
                         <a-form>
                             <a-col :span="24">
                                 <a-form-item label="验证码" v-bind="validateInfos.verify" :labelCol="{ span: 4 }">
                                     <div style="display: flex;justify-content: space-around;">
-                                        <a-input v-model:value="modelRef.verify"></a-input>
+                                        <a-input v-model:value="enrollModelRef.verify"></a-input>
                                         <div class="verify">
                                             <a-button @click="send()" type="primary" v-if="time === 0">发送验证码</a-button>
                                             <span v-else class="code">
@@ -49,6 +49,28 @@
                         <a-button type="primary" style="width: 100%;height: 40px; font-weight: bold;"
                             @click="enroll">注册</a-button>
                     </a-tab-pane>
+                    <a-tab-pane key="findPassword" tab="找回密码">
+                        <BaseForm :config="findPasswordConfig" :rules="findPasswordFormRules"
+                            v-model:data="findPasswordFormData" style="margin-top: 20px;" ref="findPasswordFormRef">
+                        </BaseForm>
+                        <a-form>
+                            <a-col :span="24">
+                                <a-form-item label="验证码" v-bind="findPasswordValidateInfos.verify" :labelCol="{ span: 4 }">
+                                    <div style="display: flex;justify-content: space-around;">
+                                        <a-input v-model:value="findPasswordModelRef.verify"></a-input>
+                                        <div class="verify">
+                                            <a-button @click="send()" type="primary" v-if="time === 0">发送验证码</a-button>
+                                            <span v-else class="code">
+                                                {{ time + '秒后获取' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a-form-item>
+                            </a-col>
+                        </a-form>
+                        <a-button type="primary" style="width: 100%;height: 40px; font-weight: bold;"
+                            @click="findPassword">找回密码</a-button>
+                    </a-tab-pane>
                 </a-tabs>
             </div>
         </div>
@@ -61,23 +83,42 @@ import { ref, reactive } from 'vue'
 const activeKey = ref('login')
 import BaseForm from "@/components/BaseForm/index.vue";
 
-import { loginColumns, loginFormRules, enrollFormRules, enrollColumns } from "./config";
+import { loginConfig, loginFormRules, enrollFormRules, enrollConfig, findPasswordConfig, findPasswordFormRules }
+    from "./config";
 
 const loginFormData = ref<any>({});
 const loginFormRef = ref();
 const login = async () => {
     let status = await loginFormRef.value.validateFn()
     if (status) {
-        
+        if (reg.test(loginFormData.value.Email)) {
+            let data = {
+                ...loginFormData.value,
+            }
+            loginApi.login(data).then((res: any) => {
+                console.log(res, 'reshhh')
+                if (res.code === 200) {
+                    Cookies.set('token', res.data.token)
+                    message.success('登录成功!')
+                    router.push('/home/homeIndex')
+                } else {
+                    message.error(res.msg)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        } else {
+            message.error('邮箱格式不正确！')
+        }
+
     }
-    console.log(status)
 }
 import { Form, message } from "ant-design-vue";
 const useForm = Form.useForm;
-const modelRef = reactive<any>({
+const enrollModelRef = reactive<any>({
     verify: undefined,
 });
-const rulesRef = reactive({
+const enrollRulesRef = reactive({
     verify: [
         {
             required: true,
@@ -85,7 +126,7 @@ const rulesRef = reactive({
         },
     ]
 });
-const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef);
+const { resetFields, validate, validateInfos } = useForm(enrollModelRef, enrollRulesRef);
 
 import { useRouter } from 'vue-router';
 const router = useRouter()
@@ -101,7 +142,7 @@ const enroll = async () => {
             }
             let data = {
                 ...enrollFormData.value,
-                ...modelRef
+                ...enrollModelRef
             }
             delete data.ensurePassword
             loginApi.enroll(data).then((res: any) => {
@@ -119,7 +160,6 @@ const enroll = async () => {
         }).catch(error => {
             console.log(error)
         })
-
     }
 }
 
@@ -128,18 +168,62 @@ const { start, time } = useCountDown()
 const isSendCode = ref(false)
 const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
 import { loginApi } from '@/api/user/login'
+const sendVerifyCode = (email: string) => {
+    loginApi.getverifyCode(email).then((res) => {
+        message.success('发送验证码成功!')
+    }).catch(error => {
+        console.log(error)
+    })
+    isSendCode.value = true
+    start(60)
+}
 const send = async () => {
-    console.log(enrollFormData.value.Email)
-    if (reg.test(enrollFormData.value.Email)) {
-        loginApi.getverifyCode(enrollFormData.value.Email).then((res) => {
-            console.log(res)
+    if (activeKey.value === 'enroll' && reg.test(enrollFormData.value.Email)) {
+        sendVerifyCode(enrollFormData.value.Email)
+    } else if (activeKey.value === 'findPassword' && reg.test(findPasswordFormData.value.Email)) {
+        sendVerifyCode(findPasswordFormData.value.Email)
+    } else {
+        message.error('邮箱格式不正确!')
+    }
+}
+
+const findPasswordFormData = ref<any>({});
+const findPasswordModelRef = reactive<any>({
+    verify: undefined,
+});
+const findPasswordFormRef = ref();
+const findPasswordRulesRef = reactive({
+    verify: [
+        {
+            required: true,
+            message: "请输入验证码",
+        },
+    ]
+});
+const { validate: findPasswordValidate, validateInfos: findPasswordValidateInfos } = useForm(findPasswordModelRef, findPasswordRulesRef);
+
+const findPassword = async () => {
+    let status = await findPasswordFormRef.value.validateFn()
+    if (status) {
+        console.log('hhh')
+        await findPasswordValidate().then(() => {
+            let data = {
+                ...findPasswordFormData.value,
+                ...findPasswordModelRef
+            }
+            delete data.ensurePassword
+            loginApi.findPassword(data).then((res: any) => {
+                console.log(res, 'reshhh')
+                if (res.code === 200) {
+                    message.success(res.msg)
+                    activeKey.value = 'login'
+                } else {
+                    message.error(res.msg)
+                }
+            })
         }).catch(error => {
             console.log(error)
         })
-        isSendCode.value = true
-        start(60)
-    } else {
-        message.error('邮箱格式不正确!')
     }
 }
 </script>
@@ -150,6 +234,7 @@ const send = async () => {
     display: flex;
     justify-content: center;
     height: 100%;
+    min-height: 700px;
 
     .box {
         width: 500px;
