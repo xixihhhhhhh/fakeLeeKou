@@ -14,4 +14,13 @@ const router = createRouter({
   routes: constantRouterMap,
 })
 
+import { useLogin } from '@/hooks/useLogin'
+const { isLogin } = useLogin()
+router.beforeEach((to, from) => {
+  console.log(isLogin.value)
+  if (to.path === '/home/login' && isLogin.value) {
+    return false
+  }
+})
+
 export default router;

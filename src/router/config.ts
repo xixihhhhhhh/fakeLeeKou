@@ -33,7 +33,11 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
                         path: "login",
                         name: 'login',
                         component: () => import("@/views/home/components/login.vue"),
-                    }
+                    },
+                    {
+                        path: 'personalIntro',
+                        component: () => import("@/views/home/components/personalIntro.vue"),
+                    },
                 ]
             },
             {

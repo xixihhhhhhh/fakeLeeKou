@@ -60,11 +60,15 @@
                             </template>
                         </a-input>
                     </div>
-                    <div class="right-middle right-item">
+                    <div class="right-middle right-item" v-if="!isLogin">
                         <router-link to="/home/login" style="margin-right: 10px;">注册</router-link>
                         <span style="margin-right: 10px;">或</span>
                         <router-link to="/home/login" style="margin-right: 10px;">登录</router-link>
                     </div>
+                    <router-link to="/home/personalIntro" style="margin-right: 10px;" v-else>
+                        <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                            style="cursor: pointer;" />
+                    </router-link>
                     <div class="right-right right-item">
                         <a-button><span class="page-container-home-yellow">Plus &nbsp;力扣周边</span></a-button>
                     </div>
@@ -77,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref } from 'vue'
+import { provide, ref, onMounted, computed } from 'vue'
 import { DownOutlined, SearchOutlined } from '@ant-design/icons-vue';
 const handleMenuClick = () => {
 
@@ -90,6 +94,16 @@ const onSearch = () => {
 
 import { RouterView } from "vue-router"
 
+import { userInfoApi } from '@/api/user/userInfo'
+onMounted(() => {
+    userInfoApi.getCurPersonMsg().then((res) => {
+    })
+})
+import Cookies from "js-cookie";
+let isLogin = ref(false)
+onMounted(() => {
+    isLogin.value = !!Cookies.get('token')
+})
 </script>
 
 <style lang="less" scoped>

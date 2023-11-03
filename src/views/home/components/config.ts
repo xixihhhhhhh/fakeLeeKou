@@ -14,7 +14,7 @@ export const loginConfig: Array<FormConfig> = [
         span: 24,
         labelSpan: 4,
         label: "密码",
-        type: 'a-input',
+        type: 'a-input-password',
         key: "Password",
     },
 ] as any;

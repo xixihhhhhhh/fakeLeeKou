@@ -98,7 +98,7 @@ const login = async () => {
             loginApi.login(data).then((res: any) => {
                 console.log(res, 'reshhh')
                 if (res.code === 200) {
-                    Cookies.set('token', res.data.token)
+                    Cookies.set('token', res.data.token, { expires: 30 })
                     message.success('登录成功!')
                     router.push('/home/homeIndex')
                 } else {
@@ -148,7 +148,7 @@ const enroll = async () => {
             loginApi.enroll(data).then((res: any) => {
                 console.log(res, 'reshhh')
                 if (res.code === 200) {
-                    Cookies.set('token', res.data.token)
+                    Cookies.set('token', res.data.token, { expires: 30 })
                     message.success('注册成功!')
                     router.push('/home/homeIndex')
                 } else if (res.code === 201) {

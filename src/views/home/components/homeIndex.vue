@@ -117,31 +117,65 @@
         <a-affix :offset-top="top">
             <div class="right">
                 <ul class="right-ul">
-                    <li class="right-item" v-for="item in arr">
-                        <div class="li-item" :class="{ 'li-background': item.bottom === '今' }">
+                    <li class="right-item" v-for="(item, index) in arr">
+                        <div class="li-item" :class="{ 'li-background': index === itemIndex }"
+                            @click="onChangeDay(item, index)">
                             <div class="li-top" :class="{ 'li-red': ['SAT', 'SUN'].includes(item.top) }">{{ item.top }}
                             </div>
                             <div class="li-bottom" :class="{ 'li-bold': item.bottom === '今' }">{{ item.bottom }}</div>
                         </div>
                     </li>
                 </ul>
-
-                <router-link to="/problems">
-                    <div class="right-dayCard">
+                <router-link to="/problems" v-if="isSunday">
+                    <div class="right-context">
                         <div class="card-top">
-                            <img src="https://static.leetcode-cn.com/cn-frontendx-assets/production/_next/static/images/everyday-problem-cbb6325ef6fecf53712264fb80350ef9.svg"
-                                alt="每日 1 题" class="h-[14px] w-[14px]">
-                            <span class="ml-1 text-xs font-medium" style="color: rgb(27, 163, 255);">每日 1 题</span>
+                            <img src="https://static.leetcode-cn.com/cn-frontendx-assets/production/_next/static/images/contest-56f777dbd0f4d503b840f2e4cc835123.svg"
+                                alt="竞赛" class="h-[14px] w-[14px]">
+                            <span class="ml-1 text-xs font-medium" style="color: #af52d1;">竞赛</span>
                         </div>
                         <div class="card-bottom">
-                            2520.统计能整除数字的位数
+                            <span class="card-bottom-left">第 370 场周赛</span>
+                            <span class="card-bottom-right">报名
+                                <right-outlined />
+                            </span>
                         </div>
                     </div>
                 </router-link>
-                <div class="right-welcome">
+                <div class="right-dayCard" @click="onRouteToProblems">
+                    <div class="card-top">
+                        <img src="https://static.leetcode-cn.com/cn-frontendx-assets/production/_next/static/images/everyday-problem-cbb6325ef6fecf53712264fb80350ef9.svg"
+                            alt="每日 1 题" class="h-[14px] w-[14px]">
+                        <span class="ml-1 text-xs font-medium" style="color: rgb(27, 163, 255);">每日 1 题</span>
+                    </div>
+                    <div class="card-bottom">
+                        <span :class="{ 'glass': !isToday }">2520.统计能整除数字的位数统计能整除数字的位数统计能整除数字的位数</span>
+                    </div>
+                    <span v-if="!isToday" class="tip">零点揭晓</span>
+                </div>
+                <div class="right-welcome" v-if="!isLogin">
                     <div class="welcome-top">欢迎来到假力扣</div>
                     <div class="welcome-bottom">
                         <a-button style="width: 100%;" @click="router.push('/home/login')">登录/注册</a-button>
+                    </div>
+                </div>
+                <div class="right-ranking-list" v-else>
+                    <div class="ranking-list-item">
+                        <div class="top">ac题数</div>
+                        <div class="bottom">
+                            <span class="num">{{ acNumber }}</span> 题
+                        </div>
+                    </div>
+                    <div class="ranking-list-item">
+                        <div class="top">ac排行</div>
+                        <div class="bottom">
+                            <span class="num">{{ acRank }}</span> 名
+                        </div>
+                    </div>
+                    <div class="ranking-list-item">
+                        <div class="top">竞赛排名</div>
+                        <div class="bottom">
+                            <span class="num">{{ contestRank }}</span> 名
+                        </div>
                     </div>
                 </div>
                 <div class="right-bottom">
@@ -189,11 +223,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue"
-import { RouterView } from "vue-router"
-
+import { ref, onMounted, computed } from "vue"
+import { RightOutlined } from "@ant-design/icons-vue";
 import dayjs from 'dayjs'
 let arr: any[] = []
+const isSunday = ref(false)
 for (let i = 0; i < 7; i++) {
     let week = dayjs().add(i, 'day').format('ddd')
     let date = dayjs().add(i, 'day').format('DD')
@@ -202,6 +236,9 @@ for (let i = 0; i < 7; i++) {
             top: (week + '').toUpperCase(),
             bottom: '今'
         })
+        if (week === 'SUN') {
+            isSunday.value = true
+        }
     } else {
         arr.push({
             top: (week + '').toUpperCase(),
@@ -209,6 +246,14 @@ for (let i = 0; i < 7; i++) {
         })
     }
 }
+const isToday = ref(true)
+const itemIndex = ref(0)
+const onChangeDay = (day: any, index: number) => {
+    isToday.value = day.bottom === '今'
+    itemIndex.value = index
+    isSunday.value = day.top === 'SUN' ? true : false
+}
+
 const top = ref<number>(20);
 
 const activeKey = ref('1')
@@ -218,6 +263,20 @@ const changeTab = () => {
 
 import { useRouter } from 'vue-router'
 const router = useRouter()
+
+import Cookies from "js-cookie";
+let isLogin = ref(false)
+onMounted(() => {
+    isLogin.value = !!Cookies.get('token')
+})
+
+const acNumber = ref(0)
+const acRank = ref(0)
+const contestRank = ref(0)
+
+const onRouteToProblems = () => {
+    isToday.value && router.push('/problems')
+}
 </script>
 
 <style lang="less" scoped>
@@ -424,15 +483,17 @@ const router = useRouter()
             }
         }
 
-        .right-dayCard {
+        .right-context {
             height: 50px;
             border-radius: 5px;
             background: #eee;
             padding: 4px 0 0 10px;
             cursor: pointer;
+            position: relative;
+            margin-bottom: 10px;
 
             &:hover {
-                background: #ccc;
+                background: #ddd;
             }
 
             .card-top {
@@ -445,8 +506,58 @@ const router = useRouter()
             }
 
             .card-bottom {
+                padding-right: 10px;
+                display: flex;
+                justify-content: space-between;
+
+                .card-bottom-left {
+                    color: #000;
+                }
+
+                .card-bottom-right {
+                    color: #999;
+                }
+            }
+        }
+
+        .right-dayCard {
+            height: 50px;
+            border-radius: 5px;
+            background: #eee;
+            padding: 4px 0 0 10px;
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+                background: #ddd;
+            }
+
+            .card-top {
+                display: flex;
+                align-items: center;
+
+                img {
+                    margin-right: 5px;
+                }
+            }
+
+            .card-bottom {
+                width: 60%;
+                white-space: nowrap;
                 color: #1a1a1a;
                 font-size: 14px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                .glass {
+                    filter: blur(10px);
+                }
+            }
+
+            .tip {
+                position: absolute;
+                bottom: 0;
+                right: 4px;
             }
         }
 
@@ -461,9 +572,34 @@ const router = useRouter()
             }
         }
 
+        .right-ranking-list {
+            display: flex;
+            height: 60px;
+            margin: 10px 0 0 0;
+            padding: 10px 0 0 0;
+            border-top: 1px solid #eee;
+
+            .ranking-list-item {
+                flex: 1;
+
+                .top {
+                    text-align: center;
+                }
+
+                .bottom {
+                    text-align: center;
+
+                    .num {
+                        color: #1a1a1a;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
         .right-bottom {
             color: #999;
-            margin-top: 20px;
             font-size: 12px;
 
             .bottom-list {
