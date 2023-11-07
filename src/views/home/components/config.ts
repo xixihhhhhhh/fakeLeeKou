@@ -85,3 +85,69 @@ export const findPasswordFormRules: Record<string, Rule[]> = {
         pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
     }],
 };
+
+export const personalMsgConfig: Array<FormConfig> = [
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "昵称",
+        type: 'a-input',
+        key: "name",
+    },
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "性别",
+        type: 'a-radio-group',
+        attrs: {
+            options: [
+                { label: '男', value: true },
+                { label: '女', value: false },
+            ],
+        },
+        key: "sex",
+    },
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "邮箱",
+        type: 'a-input',
+        key: "email",
+    },
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "地址",
+        type: 'a-input',
+        key: "address",
+    },
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "博客地址",
+        type: 'a-input',
+        key: "blog",
+    },
+] as any;
+
+export const upbatePasswordConfig: Array<FormConfig> = [
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "旧密码",
+        type: 'a-input-password',
+        key: "first",
+    },
+    {
+        span: 11,
+        labelSpan: 6,
+        label: "新密码",
+        type: 'a-input-password',
+        key: "second",
+    },
+] as any;
+
+export const upbatePasswordRules: Record<string, Rule[]> = {
+    first: [{ required: true, trigger: 'blur', min: 6, max: 18, message: '密码请在六到十八位！', }],
+    second: [{ required: true, trigger: 'blur', min: 6, max: 18, message: '密码请在六到十八位！', }],
+};

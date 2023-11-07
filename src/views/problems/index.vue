@@ -59,8 +59,8 @@
                     </template>
                     <div class="header-middle-item problem-box" style="color: #01b328;">
                         <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="cloud-arrow-up"
-                            style="position: relative;top: 2px;margin-right: 10px;" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 640 512" width="16" height="16">
+                            style="position: relative;top: 2px;margin-right: 10px;" role="img"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="16" height="16">
                             <path fill="currentColor"
                                 d="M354.9 121.7c13.8 16 36.5 21.1 55.9 12.5c8.9-3.9 18.7-6.2 29.2-6.2c39.8 0 72 32.2 72 72c0 4-.3 7.9-.9 11.7c-3.5 21.6 8.1 42.9 28.1 51.7C570.4 276.9 592 308 592 344c0 46.8-36.6 85.2-82.8 87.8c-.6 0-1.3 .1-1.9 .2H504 144c-53 0-96-43-96-96c0-41.7 26.6-77.3 64-90.5c19.2-6.8 32-24.9 32-45.3l0-.2v0 0c0-66.3 53.7-120 120-120c36.3 0 68.8 16.1 90.9 41.7zM512 480v-.2c71.4-4.1 128-63.3 128-135.8c0-55.7-33.5-103.7-81.5-124.7c1-6.3 1.5-12.8 1.5-19.3c0-66.3-53.7-120-120-120c-17.4 0-33.8 3.7-48.7 10.3C360.4 54.6 314.9 32 264 32C171.2 32 96 107.2 96 200l0 .2C40.1 220 0 273.3 0 336c0 79.5 64.5 144 144 144H464h40 8zM223 255c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V384c0 13.3 10.7 24 24 24s24-10.7 24-24V249.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z">
                             </path>
@@ -68,8 +68,21 @@
                     </div>
                 </a-tooltip>
             </div>
-            <div class="header-righ">
+            <div class="header-right">
+                <router-link to="/home/personalIntro" style="margin-right: 10px;">
+                    <a-avatar :src="avatarUrl" style="cursor: pointer;" />
+                </router-link>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="left">
                 
+            </div>
+            <div class="resize" title="收缩侧边栏">
+                ⋮
+            </div>
+            <div class="mid">
+                <!--右侧div内容-->
             </div>
         </div>
         <a-drawer v-model:visible="visible" class="custom-drawer" :closable="false" title="" placement="left" width="600px">
@@ -104,13 +117,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import {
     MenuUnfoldOutlined, LeftOutlined, RightOutlined, ScissorOutlined, CloseOutlined,
     CaretRightOutlined
 } from '@ant-design/icons-vue'
 
 const visible = ref<boolean>(false);
+
+const avatarUrl = ref('')
+import config from '@/config/defaultSettings'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+avatarUrl.value = config.imgUrl + (userStore.curUser as any).icon
+
+function dragControllerDiv() {
+    var resize = document.getElementsByClassName('resize');
+    var left = document.getElementsByClassName('left');
+    var mid = document.getElementsByClassName('mid');
+    var box = document.getElementsByClassName('main-content');
+    for (let i = 0; i < resize.length; i++) {
+        // 鼠标按下事件
+        resize[i].onmousedown = function (e) {
+            //颜色改变提醒
+            resize[i].style.background = '#818181';
+            var startX = e.clientX;
+            resize[i].left = resize[i].offsetLeft;
+            // 鼠标拖动事件
+            document.onmousemove = function (e) {
+                var endX = e.clientX;
+                var moveLen = resize[i].left + (endX - startX); // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度
+                var maxT = box[i].clientWidth - resize[i].offsetWidth; // 容器宽度 - 左边区域的宽度 = 右边区域的宽度
+
+                if (moveLen < 32) moveLen = 32; // 左边区域的最小宽度为32px
+                if (moveLen > maxT - 150) moveLen = maxT - 150; //右边区域最小宽度为150px
+
+                resize[i].style.left = moveLen; // 设置左侧区域的宽度
+
+                for (let j = 0; j < left.length; j++) {
+                    left[j].style.width = moveLen + 'px';
+                    mid[j].style.width = (box[i].clientWidth - moveLen - 10) + 'px';
+                }
+            };
+            // 鼠标松开事件
+            document.onmouseup = function (evt) {
+                //颜色恢复
+                resize[i].style.background = '#d6d6d6';
+                document.onmousemove = null;
+                document.onmouseup = null;
+                resize[i].releaseCapture && resize[i].releaseCapture(); //当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
+            };
+            resize[i].setCapture && resize[i].setCapture(); //该函数在属于当前线程的指定窗口里设置鼠标捕获
+            return false;
+        };
+    }
+}
+
+onMounted(() => {
+    dragControllerDiv()
+})
 </script>
 
 <style lang="less" scoped>
@@ -120,6 +185,7 @@ const visible = ref<boolean>(false);
 
     .header {
         margin: 0 5px;
+        padding-top: 10px;
         border-radius: 5px 5px 0 0;
         height: 50px;
         display: flex;
@@ -164,6 +230,59 @@ const visible = ref<boolean>(false);
                     background-color: rgb(226, 226, 226);
                 }
             }
+        }
+
+        .header-right {
+            margin-right: 100px;
+        }
+    }
+
+    .main-content {
+        height: 600px;
+        margin: 20px 20px 0;
+        background: #fff;
+        border-radius: 10px 10px 0 0;
+        box-shadow: -1px 9px 10px 3px rgba(0, 0, 0, 0.11);
+
+        .left {
+            width: calc(32% - 10px);
+            /*左侧初始化宽度*/
+            height: 100%;
+            background: #FFFFFF;
+            float: left;
+        }
+
+        /*拖拽区div样式*/
+        .resize {
+            cursor: col-resize;
+            float: left;
+            position: relative;
+            top: 45%;
+            background-color: #d6d6d6;
+            border-radius: 5px;
+            margin-top: -10px;
+            width: 10px;
+            height: 50px;
+            background-size: cover;
+            background-position: center;
+            /*z-index: 99999;*/
+            font-size: 32px;
+            color: white;
+        }
+
+        /*拖拽区鼠标悬停样式*/
+        .resize:hover {
+            color: #444444;
+        }
+
+        /*右侧div'样式*/
+        .mid {
+            float: left;
+            width: 68%;
+            /*右侧初始化宽度*/
+            height: 100%;
+            background: #fff;
+            box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
         }
     }
 }

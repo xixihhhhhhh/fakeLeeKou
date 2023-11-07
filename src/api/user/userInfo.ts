@@ -11,4 +11,20 @@ export const userInfoApi = new (class {
             method: "get",
         })
     }
+    /* 更新密码 */
+    upbatePassword = <T = any>(data: any) => {
+        return axios<ResDataStruct<T>>({
+            url: `${prefixPath}/update/password`,
+            method: "PUT",
+            data
+        })
+    }
+    /* 更新用户信息 */
+    upbateCurPersonMsg = <T = any>(data: any) => {
+        return axios<ResDataStruct<T>>({
+            url: `${prefixPath}/update`,
+            method: "PUT",
+            data
+        })
+    }
 })();

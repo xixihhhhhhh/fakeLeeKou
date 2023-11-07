@@ -122,7 +122,6 @@ const validateFn = () => {
             .catch((info: any) => {
                 subRef.value?.map(async (val: any) => {
                     if (val.validateFn) {
-                        console.log(`val：`, val)
                         val.validateFn()
                     }
                 })

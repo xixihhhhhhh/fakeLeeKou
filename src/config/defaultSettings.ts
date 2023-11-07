@@ -8,4 +8,5 @@ export default {
   systemName: '广汽集团安全智慧大脑',
   context: import.meta.env.VITE_APP_CONTEXT as string || '',
   loginUrl: import.meta.env.VITE_APP_MBP_LOGIN_URL || '/login#/',
+  imgUrl: 'http://106.53.120.252:81/'
 }

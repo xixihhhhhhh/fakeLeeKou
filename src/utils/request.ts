@@ -1,4 +1,3 @@
-import { useUserStore } from "@/stores/user";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from "axios";
 import Cookies from "js-cookie";
 import { useCancelTokenStore } from '@/stores/cancelToken'
@@ -18,7 +17,7 @@ const err = (error: { request: AxiosRequestConfig, response: AxiosResponse }) =>
 
 service.interceptors.request.use((config: any) => {
     if (Cookies.get('token')) {
-        config.headers['token'] = Cookies.get('token');
+        config.headers.Authorization = 'Bearer ' + Cookies.get('token');
     }
     config.headers["X-Axios-With"] = true;
 

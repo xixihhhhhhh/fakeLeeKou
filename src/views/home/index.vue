@@ -66,7 +66,7 @@
                         <router-link to="/home/login" style="margin-right: 10px;">登录</router-link>
                     </div>
                     <router-link to="/home/personalIntro" style="margin-right: 10px;" v-else>
-                        <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                        <a-avatar :src="avatarUrl"
                             style="cursor: pointer;" />
                     </router-link>
                     <div class="right-right right-item">
@@ -95,8 +95,14 @@ const onSearch = () => {
 import { RouterView } from "vue-router"
 
 import { userInfoApi } from '@/api/user/userInfo'
+import config from '@/config/defaultSettings'
+const avatarUrl = ref('')
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
 onMounted(() => {
     userInfoApi.getCurPersonMsg().then((res) => {
+        userStore.setCurUser(res.data.user)
+        avatarUrl.value = config.imgUrl + res.data.user.icon
     })
 })
 import Cookies from "js-cookie";
