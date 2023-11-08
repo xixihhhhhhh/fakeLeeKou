@@ -2,14 +2,16 @@
     <div class="problems-container">
         <div class="header">
             <div class="header-left">
-                <div class="header-left-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1698735267811"
-                        class="icon" viewBox="0 0 1086 1024" version="1.1" p-id="2624" width="33.9375" height="20">
-                        <path
-                            d="M321.214785 391.8002l455.224775-2.045954-218.917083 550.361638zM373.386613 192.31968l346.789211 3.068931 61.378621 134.00999-450.10989-3.068931zM274.157842 322.237762l-274.157842-114.573427 147.308691-109.458541 175.952048 91.044955zM0 274.157842l259.836164 115.596404 279.272727 546.26973zM841.91009 388.731269l243.468531-125.826174-512.511489 670.04995zM836.795205 321.214785l-68.539461-141.170829 156.515485-86.953047 135.032967 113.55045zM368.271728 124.803197l-59.332667-15.344655-111.504496-62.401598 130.941059-47.056943 427.604396 0 129.918082 54.217782-124.803197 60.355644-41.942058 10.22977-350.881119 0z"
-                            p-id="2625" fill="#1296db" />
-                    </svg>
-                </div>
+                <router-link to="/home/homeIndex">
+                    <div class="header-left-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1698735267811"
+                            class="icon" viewBox="0 0 1086 1024" version="1.1" p-id="2624" width="33.9375" height="20">
+                            <path
+                                d="M321.214785 391.8002l455.224775-2.045954-218.917083 550.361638zM373.386613 192.31968l346.789211 3.068931 61.378621 134.00999-450.10989-3.068931zM274.157842 322.237762l-274.157842-114.573427 147.308691-109.458541 175.952048 91.044955zM0 274.157842l259.836164 115.596404 279.272727 546.26973zM841.91009 388.731269l243.468531-125.826174-512.511489 670.04995zM836.795205 321.214785l-68.539461-141.170829 156.515485-86.953047 135.032967 113.55045zM368.271728 124.803197l-59.332667-15.344655-111.504496-62.401598 130.941059-47.056943 427.604396 0 129.918082 54.217782-124.803197 60.355644-41.942058 10.22977-350.881119 0z"
+                                p-id="2625" fill="#1296db" />
+                        </svg>
+                    </div>
+                </router-link>
                 <a-tooltip placement="bottom">
                     <template #title>
                         <span>展开面板</span>
@@ -76,7 +78,7 @@
         </div>
         <div class="main-content">
             <div class="left">
-                
+
             </div>
             <div class="resize" title="收缩侧边栏">
                 ⋮
@@ -131,51 +133,21 @@ import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 avatarUrl.value = config.imgUrl + (userStore.curUser as any).icon
 
-function dragControllerDiv() {
-    var resize = document.getElementsByClassName('resize');
-    var left = document.getElementsByClassName('left');
-    var mid = document.getElementsByClassName('mid');
-    var box = document.getElementsByClassName('main-content');
-    for (let i = 0; i < resize.length; i++) {
-        // 鼠标按下事件
-        resize[i].onmousedown = function (e) {
-            //颜色改变提醒
-            resize[i].style.background = '#818181';
-            var startX = e.clientX;
-            resize[i].left = resize[i].offsetLeft;
-            // 鼠标拖动事件
-            document.onmousemove = function (e) {
-                var endX = e.clientX;
-                var moveLen = resize[i].left + (endX - startX); // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度
-                var maxT = box[i].clientWidth - resize[i].offsetWidth; // 容器宽度 - 左边区域的宽度 = 右边区域的宽度
-
-                if (moveLen < 32) moveLen = 32; // 左边区域的最小宽度为32px
-                if (moveLen > maxT - 150) moveLen = maxT - 150; //右边区域最小宽度为150px
-
-                resize[i].style.left = moveLen; // 设置左侧区域的宽度
-
-                for (let j = 0; j < left.length; j++) {
-                    left[j].style.width = moveLen + 'px';
-                    mid[j].style.width = (box[i].clientWidth - moveLen - 10) + 'px';
-                }
-            };
-            // 鼠标松开事件
-            document.onmouseup = function (evt) {
-                //颜色恢复
-                resize[i].style.background = '#d6d6d6';
-                document.onmousemove = null;
-                document.onmouseup = null;
-                resize[i].releaseCapture && resize[i].releaseCapture(); //当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
-            };
-            resize[i].setCapture && resize[i].setCapture(); //该函数在属于当前线程的指定窗口里设置鼠标捕获
-            return false;
-        };
-    }
-}
+import { dragControllerDiv } from './config'
 
 onMounted(() => {
     dragControllerDiv()
 })
+
+import { ProblemApi } from '@/api/problem'
+import { searchProblemApi } from '@/api/problem/search'
+import { useRoute } from 'vue-router'
+onMounted(() => {
+    ProblemApi.problemList()
+    searchProblemApi.searchById()
+})
+
+
 </script>
 
 <style lang="less" scoped>
@@ -245,7 +217,7 @@ onMounted(() => {
         box-shadow: -1px 9px 10px 3px rgba(0, 0, 0, 0.11);
 
         .left {
-            width: calc(32% - 10px);
+            width: calc(50% - 10px);
             /*左侧初始化宽度*/
             height: 100%;
             background: #FFFFFF;
@@ -278,7 +250,7 @@ onMounted(() => {
         /*右侧div'样式*/
         .mid {
             float: left;
-            width: 68%;
+            width: 50%;
             /*右侧初始化宽度*/
             height: 100%;
             background: #fff;

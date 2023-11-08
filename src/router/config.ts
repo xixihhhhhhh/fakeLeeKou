@@ -38,6 +38,10 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
                         path: 'personalIntro',
                         component: () => import("@/views/home/components/personalIntro.vue"),
                     },
+                    {
+                        path: 'search',
+                        component: () => import("@/views/home/components/search.vue"),
+                    },
                 ]
             },
             {

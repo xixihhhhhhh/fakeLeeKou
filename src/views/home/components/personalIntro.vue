@@ -15,9 +15,9 @@
             </div>
             <div class="personalIntro-right">
                 <div class="avatar-upload">
-                    <a-upload v-model:file-list="fileList" name="icon" list-type="picture-card" class="avatar-uploader"
-                        :show-upload-list="false" action="http://api_oj.mgaronya.com/user/update"
-                        :before-upload="beforeUpload" @change="handleChange" :maxCount="1" method="put">
+                    <a-upload v-model:file-list="fileList" name="" list-type="picture-card" class="avatar-uploader"
+                        :show-upload-list="false" action="http://api_img.mgaronya.com/img/upload"
+                        :before-upload="beforeUpload" @change="handleChange" :maxCount="1" method="post">
                         <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
                         <div v-else>
                             <loading-outlined v-if="loading"></loading-outlined>
@@ -164,6 +164,13 @@ function onUpbatePassword() {
 }
 
 const upbatePasswordFormData = ref({})
+
+import { badgeApi } from '@/api/user/badge'
+onMounted(() => {
+    badgeApi.getCurBadge().then((res) => {
+        console.log(res, '');
+    })
+})
 </script>
 
 <style lang="less" scoped>

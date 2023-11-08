@@ -4,7 +4,7 @@
             <div class="header">
                 <div class="left">
                     <router-link to="/home/homeIndex">
-                        <div class="left-item" @click="">
+                        <div class="left-item">
                             <svg width="54.6" height="20.2" viewBox="0 0 273 101" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="h-full w-auto max-w-none">
                                 <path
@@ -54,7 +54,8 @@
                         <div v-if="isShowSearch" @click="isShowSearch = false" class="right-item-search">
                             <SearchOutlined />
                         </div>
-                        <a-input v-model:value="userName" placeholder="搜素" autofocus @blur="isShowSearch = true" v-else>
+                        <a-input v-model:value="searchText" placeholder="搜素" autofocus @blur="onBlue"
+                            @keyup.enter="onRouteGo" v-else>
                             <template #prefix>
                                 <SearchOutlined type="user" />
                             </template>
@@ -66,8 +67,7 @@
                         <router-link to="/home/login" style="margin-right: 10px;">登录</router-link>
                     </div>
                     <router-link to="/home/personalIntro" style="margin-right: 10px;" v-else>
-                        <a-avatar :src="avatarUrl"
-                            style="cursor: pointer;" />
+                        <a-avatar :src="avatarUrl" style="cursor: pointer;" />
                     </router-link>
                     <div class="right-right right-item">
                         <a-button><span class="page-container-home-yellow">Plus &nbsp;力扣周边</span></a-button>
@@ -86,7 +86,7 @@ import { DownOutlined, SearchOutlined } from '@ant-design/icons-vue';
 const handleMenuClick = () => {
 
 }
-const userName = ref()
+const searchText = ref()
 const isShowSearch = ref(true)
 const onSearch = () => {
 
@@ -110,6 +110,18 @@ let isLogin = ref(false)
 onMounted(() => {
     isLogin.value = !!Cookies.get('token')
 })
+
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const onRouteGo = () => {
+    isShowSearch.value = !isShowSearch.value
+    router.push({ path: '/home/search', query: { text: searchText.value } })
+    searchText.value = ''
+}
+const onBlue = () => {
+    searchText.value = ''
+    isShowSearch.value = true
+}
 </script>
 
 <style lang="less" scoped>
