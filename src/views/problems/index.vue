@@ -78,7 +78,17 @@
         </div>
         <div class="main-content">
             <div class="left">
-
+                <p class="title">{{ (problem as any).title }}</p>
+                <p class="created-at">&nbsp;&nbsp;创建于{{ (problem as any).created_at }} &nbsp;更新于{{ (problem as
+                    any).updated_at }}</p>
+                <p class="description" v-html="(problem as any).description"></p>
+                <p class="hint" v-html="(problem as any).hint"></p>
+                <p style="font-weight: bold;font-size: 16px;">输入</p>
+                <p class="input" v-html="(problem as any).input"></p>
+                <p style="font-weight: bold;font-size: 16px;">输出</p>
+                <p class="output" v-html="(problem as any).output"></p>
+                <p style="font-weight: bold;font-size: 16px;">贡献者</p>
+                <p class="source" style="font-weight: bold;font-size: 16px;">&nbsp;&nbsp;{{ (problem as any).source }}</p>
             </div>
             <div class="resize" title="收缩侧边栏">
                 ⋮
@@ -142,9 +152,13 @@ onMounted(() => {
 import { ProblemApi } from '@/api/problem'
 import { searchProblemApi } from '@/api/problem/search'
 import { useRoute } from 'vue-router'
+const route = useRoute()
+const problem = ref({})
 onMounted(() => {
     ProblemApi.problemList()
-    searchProblemApi.searchById()
+    searchProblemApi.searchById(route.query.id + '').then((res: any) => {
+        problem.value = res.data.problem
+    })
 })
 
 
@@ -210,7 +224,7 @@ onMounted(() => {
     }
 
     .main-content {
-        height: 600px;
+        height: 700px;
         margin: 20px 20px 0;
         background: #fff;
         border-radius: 10px 10px 0 0;
@@ -222,6 +236,22 @@ onMounted(() => {
             height: 100%;
             background: #FFFFFF;
             float: left;
+            padding: 10px 0 0 10px;
+            overflow-y: auto;
+
+            .title {
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            .source {
+                font-size: 12px;
+                color: #999;
+            }
+
+            .description {
+                user-select: none;
+            }
         }
 
         /*拖拽区div样式*/
