@@ -16,7 +16,7 @@
                     <template #title>
                         <span>展开面板</span>
                     </template>
-                    <div class="header-left-item problem-box" @click="visible = true">
+                    <div class="header-left-item problem-box" @click="onOpenDrawer">
                         <menu-unfold-outlined />
                         题库
                     </div>
@@ -93,8 +93,46 @@
             <div class="resize" title="收缩侧边栏">
                 ⋮
             </div>
+            <!--右侧div内容-->
             <div class="mid">
-                <!--右侧div内容-->
+                <div class="language">
+                    <a-dropdown placement="bottom" :trigger="['click']">
+                        <a-button>javascript</a-button>
+                        <template #overlay>
+                            <div class="language-list" style="height: 200px;display: flex;position: relative;
+                                left: 35%;">
+                                <div class="language-list-item">
+                                    <ul>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">C</li>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">C#</li>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">C++</li>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">Erlang</li>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">Go</li>
+                                        <li style="height: 32px;width: 140px;padding: 6px 12px 6px 6px;">Java</li>
+                                    </ul>
+                                </div>
+                                <div class="language-list-item">
+                                    <ul>
+                                        <li>JavaScript</li>
+                                        <li>Kotlin</li>
+                                        <li>Pascal</li>
+                                        <li>PHP</li>
+                                        <li>Python</li>
+                                        <li>Racket</li>
+                                    </ul>
+                                </div>
+                                <div class="language-list-item">
+                                    <ul>
+                                        <li>Ruby</li>
+                                        <li>Rust</li>
+                                        <li>Swift</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </a-dropdown>
+                </div>
+                <MonacoEditor ref="MonacoEditRef" v-model="editJson" :language="language" />
             </div>
         </div>
         <a-drawer v-model:visible="visible" class="custom-drawer" :closable="false" title="" placement="left" width="600px">
@@ -103,11 +141,11 @@
                     <span class="drawer-header-title">题库</span>
                     <right-outlined />
                 </div>
-                <div>
+                <div @click="visible = false">
                     <close-outlined />
                 </div>
             </div>
-            <div class="drawer-scoll">
+            <div class="drawer-scoll" ref="drawerProblemList">
                 <div class="drawer-second-row">
                     <div class="drawer-second-row-top"> 为你推荐 </div>
                     <div class="drawer-second-row-bottom">
@@ -115,11 +153,12 @@
                         <a-checkbox>显示标签</a-checkbox>
                     </div>
                     <div class="drawer-problem-list">
-                        <div class="drawer-problem-list-item" v-for="item in 10">
-                            <a-checkbox>统计特殊子序列的数目</a-checkbox>
-                            <span v-if="1" style="color: #ff3348;">困难</span>
-                            <span v-else style="color: #FFB800;">中等</span>
-                            <span v-if="0" style="color: #15BD66;">简单</span>
+                        <div class="drawer-problem-list-item" v-for="(item, index) in problemList" :key="index"
+                            @click="onRouteToProblem(item.id)">
+                            <a-checkbox>{{ item.title }}</a-checkbox>
+                            <span v-if="index % 3 === 0" style="color: #ff3348;">困难</span>
+                            <span v-else-if="index % 3 === 1" style="color: #FFB800;">中等</span>
+                            <span v-else style="color: #15BD66;">简单</span>
                         </div>
                     </div>
                 </div>
@@ -129,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive, onUnmounted, nextTick, watch } from 'vue'
 import {
     MenuUnfoldOutlined, LeftOutlined, RightOutlined, ScissorOutlined, CloseOutlined,
     CaretRightOutlined
@@ -155,13 +194,73 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const problem = ref({})
 onMounted(() => {
-    ProblemApi.problemList()
     searchProblemApi.searchById(route.query.id + '').then((res: any) => {
-        problem.value = res.data.problem
+        if (res.code === 200) {
+            problem.value = res.data.problem
+        }
     })
 })
 
+import MonacoEditor from '@/components/MonacoEditor/index.vue'
 
+const MonacoEditRef = ref<InstanceType<typeof MonacoEditor>>()
+const editJson = ref('')
+const language = ref('javascript')
+
+const problemList = ref<any[]>([])
+const params = reactive({
+    pageNum: 1,
+    pageSize: 20
+})
+onMounted(() => {
+    ProblemApi.problemList(params).then((res: any) => {
+        if (res.code === 200) {
+            problemList.value = [...problemList.value, ...res.data.problems]
+        }
+    })
+})
+
+const drawerProblemList = ref(null)
+
+const doScroll = (event: any) => {
+    const scrollHeight = event.target.scrollHeight
+    const scrollTop = event.target.scrollTop
+    const clientHeight = event.target.clientHeight
+    if (scrollTop + clientHeight >= scrollHeight) {
+        params.pageNum++
+        ProblemApi.problemList(params).then((res: any) => {
+            if (res.code === 200) {
+                problemList.value = [...problemList.value, ...res.data.problems]
+            }
+        })
+    } else {
+    }
+}
+const onOpenDrawer = () => {
+    visible.value = true
+    nextTick(() => {
+        drawerProblemList.value && (drawerProblemList.value as any).addEventListener('scroll', doScroll)
+    })
+}
+onUnmounted(() => {
+    drawerProblemList.value && (drawerProblemList.value as any).removeEventListener('scroll', doScroll)
+})
+
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const onRouteToProblem = (id: string) => {
+    router.push({ path: '/problems', query: { id } })
+}
+
+watch(() => route.query.id,
+    () => {
+        searchProblemApi.searchById(route.query.id + '').then((res: any) => {
+            if (res.code === 200) {
+                visible.value = false
+                problem.value = res.data.problem
+            }
+        })
+    })
 </script>
 
 <style lang="less" scoped>
@@ -285,6 +384,20 @@ onMounted(() => {
             height: 100%;
             background: #fff;
             box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
+            overflow-y: auto;
+
+            .language {
+                .language-list {
+                    width: 440px;
+                    height: 272px;
+                    background: #1a1a1a;
+
+                    .language-list-item {
+                        width: 100px;
+                        height: 100px;
+                    }
+                }
+            }
         }
     }
 }

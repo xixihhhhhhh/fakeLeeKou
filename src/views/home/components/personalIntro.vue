@@ -15,7 +15,7 @@
             </div>
             <div class="personalIntro-right">
                 <div class="avatar-upload">
-                    <a-upload v-model:file-list="fileList" name="" list-type="picture-card" class="avatar-uploader"
+                    <a-upload v-model:file-list="fileList" name="file" list-type="picture-card" class="avatar-uploader"
                         :show-upload-list="false" action="http://api_img.mgaronya.com/img/upload"
                         :before-upload="beforeUpload" @change="handleChange" :maxCount="1" method="post">
                         <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
@@ -108,7 +108,6 @@ function getBase64(img: Blob, callback: (base64Url: string) => void) {
 const fileList = ref([]);
 const loading = ref<boolean>(false);
 const handleChange = (info: UploadChangeParam) => {
-
     if (info.file.status === 'uploading') {
         loading.value = true;
         return;
@@ -119,6 +118,11 @@ const handleChange = (info: UploadChangeParam) => {
             imageUrl.value = base64Url;
             loading.value = false;
         });
+        console.log(info, 'info');
+        userInfoApi.upbateCurPersonMsg({ icon: info.fileList[0].response.data.Icon }).then((res) => {
+            console.log(res)
+            message.success(res.msg)
+        })
     }
     if (info.file.status === 'error') {
         loading.value = false;
@@ -168,7 +172,6 @@ const upbatePasswordFormData = ref({})
 import { badgeApi } from '@/api/user/badge'
 onMounted(() => {
     badgeApi.getCurBadge().then((res) => {
-        console.log(res, '');
     })
 })
 </script>
