@@ -61,7 +61,7 @@
                             </template>
                         </a-input>
                     </div>
-                    <div class="right-middle right-item" v-if="!isLogin">
+                    <div class="right-middle right-item" v-if="!userStore.isLogin">
                         <router-link to="/home/login" style="margin-right: 10px;">注册</router-link>
                         <span style="margin-right: 10px;">或</span>
                         <router-link to="/home/login" style="margin-right: 10px;">登录</router-link>
@@ -69,6 +69,7 @@
                     <router-link to="/home/personalIntro" style="margin-right: 10px;" v-else>
                         <a-avatar :src="avatarUrl" style="cursor: pointer;" />
                     </router-link>
+                    {{ avatarUrl }}
                     <div class="right-right right-item">
                         <a-button><span class="page-container-home-yellow">Plus &nbsp;力扣周边</span></a-button>
                     </div>
@@ -88,9 +89,6 @@ const handleMenuClick = () => {
 }
 const searchText = ref()
 const isShowSearch = ref(true)
-const onSearch = () => {
-
-}
 
 import { RouterView } from "vue-router"
 
@@ -105,11 +103,7 @@ onMounted(() => {
         avatarUrl.value = config.imgUrl + res.data.user.icon
     })
 })
-import Cookies from "js-cookie";
-let isLogin = ref(false)
-onMounted(() => {
-    isLogin.value = !!Cookies.get('token')
-})
+
 
 import { useRouter } from 'vue-router';
 const router = useRouter()
@@ -122,6 +116,7 @@ const onBlue = () => {
     searchText.value = ''
     isShowSearch.value = true
 }
+
 </script>
 
 <style lang="less" scoped>

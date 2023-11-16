@@ -97,10 +97,11 @@
             <div class="mid">
                 <div class="language">
                     <a-dropdown placement="bottom" :trigger="['click']">
-                        <a-button>javascript</a-button>
+                        <a-button>{{ language }}</a-button>
                         <template #overlay>
                             <div class="language-list" style="height: 200px;display: flex;position: relative;
-                                left: 35%;background: #fff;border-radius: 10px;margin: 4px;box-shadow: 0 0 10px #ccc;">
+                                left: 35%;background: #fff;border-radius: 10px;margin: 4px;box-shadow: 0 0 10px #ccc;"
+                                @click="chooseLanguage">
                                 <div class="language-list-item">
                                     <ul>
                                         <li>C
@@ -113,111 +114,111 @@
                                             </svg>
                                         </li>
                                         <li>C#<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>C++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Erlang<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Go<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Java<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                     </ul>
                                 </div>
                                 <div class="language-list-item">
                                     <ul>
-                                        <li>JavaScript<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                        <li>JavaScript<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                width="1em" height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Kotlin<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Pascal<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>PHP<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Python<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Racket<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                     </ul>
                                 </div>
                                 <div class="language-list-item">
                                     <ul>
                                         <li>Ruby<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Rust<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                         <li>Swift<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em"
-                                                    height="1em" fill="currentColor"
-                                                    class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg></li>
+                                                height="1em" fill="currentColor"
+                                                class="pointer-events-none ml-1 h-[14px] w-[14px] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 text-gray-60 dark:text-gray-60">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 11a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm0-3a1 1 0 110 2 1 1 0 010-2zm0 14C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></li>
                                     </ul>
                                 </div>
                             </div>
@@ -297,7 +298,6 @@ import MonacoEditor from '@/components/MonacoEditor/index.vue'
 
 const MonacoEditRef = ref<InstanceType<typeof MonacoEditor>>()
 const editJson = ref('')
-const language = ref('javascript')
 
 const problemList = ref<any[]>([])
 const params = reactive({
@@ -353,6 +353,12 @@ watch(() => route.query.id,
             }
         })
     })
+
+const language = ref('javascript')
+const chooseLanguage = (e: any) => {
+    console.log(e.target.textContent)
+    language.value = e.target.textContent
+}
 </script>
 
 <style lang="less" scoped>
@@ -581,6 +587,7 @@ watch(() => route.query.id,
                 line-height: 32px;
                 text-align: center;
                 cursor: pointer;
+
                 svg {
                     position: relative;
                     top: 10px;
@@ -591,6 +598,7 @@ watch(() => route.query.id,
 
             li:hover {
                 background: rgb(245, 245, 245);
+
                 svg {
                     opacity: 1;
                 }
@@ -602,4 +610,5 @@ watch(() => route.query.id,
         border-right: 1px solid #ccc;
 
     }
-}</style>
+}
+</style>

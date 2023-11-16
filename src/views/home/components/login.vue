@@ -88,6 +88,8 @@ import { loginConfig, loginFormRules, enrollFormRules, enrollConfig, findPasswor
 
 const loginFormData = ref<any>({});
 const loginFormRef = ref();
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
 const login = async () => {
     let status = await loginFormRef.value.validateFn()
     if (status) {
@@ -99,6 +101,7 @@ const login = async () => {
                 console.log(res, 'reshhh')
                 if (res.code === 200) {
                     Cookies.set('token', res.data.token, { expires: 30 })
+                    userStore.setLogin(true)
                     message.success('登录成功!')
                     router.push('/home/homeIndex')
                 } else {

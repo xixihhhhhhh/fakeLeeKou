@@ -7,7 +7,12 @@ export const useUserStore = defineStore("user", () => {
         curUser.value = User
     }
 
-    return { curUser, setCurUser }
+    const isLogin = ref(false)
+    const setLogin = (flag: boolean) => {
+        isLogin.value = flag
+    }
+
+    return { curUser, setCurUser, isLogin, setLogin }
 }, {
     persist: true
 }
